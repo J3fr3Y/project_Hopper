@@ -1,33 +1,48 @@
+#include <stdint.h>
 #include "Arduino.h"
 #include "fonctionsMoteur.h"
 
-const int M1_PWM = 6;
-const int M1_DIR = 7;
-const int M2_PWM = 5;
-const int M2_DIR = 4;
+const int CRUISE1 = 255;   // tune separately 6.57 v for the left motor
+const int CRUISE2 = 255;  // tune separately
+const int KICK = 160;     // startup kick
+const int KICK_TIME = 150;
 
-void initMoteur (){
+void initMoteur (int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D){
 
-  pinMode(M1_PWM, OUTPUT);
-  pinMode(M1_DIR, OUTPUT);
-  pinMode(M2_PWM, OUTPUT);
-  pinMode(M2_DIR, OUTPUT);
+  pinMode(M1_P, OUTPUT);
+  pinMode(M1_D, OUTPUT);
+  pinMode(M2_P, OUTPUT);
+  pinMode(M2_D, OUTPUT);
+
+  digitalWrite(M1_DIR, LOW);
+  digitalWrite(M2_DIR, LOW);
+  analogWrite(M1_PWM, 0);
+  analogWrite(M2_PWM, 0);
 
 }
 
-void vitesseMot (int speed, bool forward){
+void vitesseMot (int16_t speed1, int16_t speed2, bool forward){
 
   digitalWrite(M1_DIR, forward ? HIGH : LOW);
-  analogWrite(M1_PWM, speedVal); 
+  analogWrite(M1_PWM, speed1); 
 
   digitalWrite(M2_DIR, forward ? HIGH : LOW);
-  analogWrite(M2_PWM, speedVal);   // 0..255
+  analogWrite(M2_PWM, speed2);   // 0..255
 
 }
 
 void arretMot (){
   analogWrite(M1_PWM, 0);
   analogWrite(M2_PWM, 0);
+}
+
+void drive(bool forward, int s1, int s2) {
+  // startup kick to overcome static friction
+  motor1(KICK, forward);
+  motor2(KICK, forward);
+  delay(KICK_TIME);
+
+  vitesseMot(s1,s2,forward);
 }
 
 

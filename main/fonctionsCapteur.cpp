@@ -14,6 +14,7 @@ void calibrerCapteur(QTRSensors &capteur) {
     for (uint8_t i = 0; i < 200; i++) {
         capteur.calibrate();
         delay(20);
+        
     }
 
     Serial.println("Fin calibrage");
