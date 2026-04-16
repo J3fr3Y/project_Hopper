@@ -6,7 +6,6 @@
 #include <Arduino.h>
 #include <QTRSensors.h>
 
-#define NB_CAPTEURS 3
 
 void initCapteur(QTRSensors &capteur);
 void calibrerCapteur(QTRSensors &capteur);
