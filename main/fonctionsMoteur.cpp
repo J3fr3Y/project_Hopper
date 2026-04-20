@@ -6,6 +6,7 @@ const int CRUISE1 = 255;   // tune separately 6.57 v for the left motor
 const int CRUISE2 = 255;  // tune separately
 const int KICK = 160;     // startup kick
 const int KICK_TIME = 150;
+const int CRUISE_CALIBRATE = 100;
 
 
 enum Direction {
@@ -22,10 +23,10 @@ void initMoteur (int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D){
   pinMode(M2_P, OUTPUT);
   pinMode(M2_D, OUTPUT);
 
-  digitalWrite(M1_DIR, LOW);
-  digitalWrite(M2_DIR, LOW);
-  analogWrite(M1_PWM, 0);
-  analogWrite(M2_PWM, 0);
+  digitalWrite(M1_D, LOW);
+  digitalWrite(M2_D, LOW);
+  analogWrite(M1_P, 0);
+  analogWrite(M2_P, 0);
 
 }
 
@@ -44,14 +45,14 @@ void arretMot (){
   analogWrite(M2_PWM, 0);
 }
 
-void drive(bool forward, int s1, int s2) {
+/* void drive(bool forward, int s1, int s2) {
   // startup kick to overcome static friction
   motor1(KICK, forward);
   motor2(KICK, forward);
   delay(KICK_TIME);
 
   vitesseMot(s1,s2,forward);
-}
+}*/
 
 void gauche(int16_t puissance){
   vitesseMot(puissance, 0, true);
@@ -66,9 +67,9 @@ void ossiler(int16_t intervalle){
   static Direction dir = GAUCHE;
 
   if (dir == GAUCHE){
-    gauche(100);
+    gauche(CRUISE_CALIBRATE);
   }else {
-    droite(100);
+    droite(CRUISE_CALIBRATE);
   }
   compteur++;
   if (compteur>= intervalle){
