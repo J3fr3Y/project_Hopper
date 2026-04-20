@@ -23,10 +23,7 @@ void calibrage(int &capteur){
   for (uint8_t i = 0; i < 200; i++) {
       capteur.calibrate();
       delay(20);
-      if (i == 24+r){
-        //bouge
-        r+=25;
-      }
+      ossiler(30);
       
   }
 

@@ -7,6 +7,14 @@ const int CRUISE2 = 255;  // tune separately
 const int KICK = 160;     // startup kick
 const int KICK_TIME = 150;
 
+
+enum Direction {
+  GAUCHE,
+  DROITE
+};
+
+
+
 void initMoteur (int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D){
 
   pinMode(M1_P, OUTPUT);
@@ -45,6 +53,29 @@ void drive(bool forward, int s1, int s2) {
   vitesseMot(s1,s2,forward);
 }
 
+void gauche(int16_t puissance){
+  vitesseMot(puissance, 0, true);
+}
+
+void droite(int16_t puissance){
+  vitesseMot(0,puissance,true);
+}
+
+void ossiler(int16_t intervalle){
+  static int16_t compteur = 0;
+  static Direction dir = GAUCHE;
+
+  if (dir == GAUCHE){
+    gauche(100);
+  }else {
+    droite(100);
+  }
+  compteur++;
+  if (compteur>= intervalle){
+    dir = (Direction)!dir;
+    compteur = 0;
+  }
+}
 
 
 
