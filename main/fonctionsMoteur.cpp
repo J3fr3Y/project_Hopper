@@ -2,82 +2,92 @@
 #include "Arduino.h"
 #include "fonctionsMoteur.h"
 
-const int CRUISE1 = 255;   // tune separately 6.57 v for the left motor
-const int CRUISE2 = 255;  // tune separately
-const int KICK = 160;     // startup kick
+// Variables internes au module (plus de dépendance externe)
+static int16_t M1_PWM;
+static int16_t M1_DIR;
+static int16_t M2_PWM;
+static int16_t M2_DIR;
+
+const int CRUISE1 = 255;
+const int CRUISE2 = 255;
+const int KICK = 160;
 const int KICK_TIME = 150;
 const int CRUISE_CALIBRATE = 100;
 
-
 enum Direction {
-  GAUCHE,
-  DROITE
+    GAUCHE,
+    DROITE
 };
 
+void initMoteur(int16_t m1_pwm, int16_t m1_dir,
+                int16_t m2_pwm, int16_t m2_dir) {
 
+    // Stockage des pins
+    M1_PWM = m1_pwm;
+    M1_DIR = m1_dir;
+    M2_PWM = m2_pwm;
+    M2_DIR = m2_dir;
 
-void initMoteur (int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D){
+    pinMode(M1_PWM, OUTPUT);
+    pinMode(M1_DIR, OUTPUT);
+    pinMode(M2_PWM, OUTPUT);
+    pinMode(M2_DIR, OUTPUT);
 
-  pinMode(M1_P, OUTPUT);
-  pinMode(M1_D, OUTPUT);
-  pinMode(M2_P, OUTPUT);
-  pinMode(M2_D, OUTPUT);
-
-  digitalWrite(M1_D, LOW);
-  digitalWrite(M2_D, LOW);
-  analogWrite(M1_P, 0);
-  analogWrite(M2_P, 0);
-
+    // État initial
+    digitalWrite(M1_DIR, LOW);
+    digitalWrite(M2_DIR, LOW);
+    analogWrite(M1_PWM, 0);
+    analogWrite(M2_PWM, 0);
 }
 
-void vitesseMot (int16_t speed1, int16_t speed2, bool forward){
+void vitesseMot(int16_t speed1, int16_t speed2, bool forward) {
+    digitalWrite(M1_DIR, forward ? HIGH : LOW);
+    digitalWrite(M2_DIR, forward ? HIGH : LOW);
 
-  digitalWrite(M1_DIR, forward ? HIGH : LOW);
-  analogWrite(M1_PWM, speed1); 
-
-  digitalWrite(M2_DIR, forward ? HIGH : LOW);
-  analogWrite(M2_PWM, speed2);   // 0..255
-
+    analogWrite(M1_PWM, speed1);
+    analogWrite(M2_PWM, speed2);
 }
 
-void arretMot (){
-  analogWrite(M1_PWM, 0);
-  analogWrite(M2_PWM, 0);
+void arretMot() {
+    analogWrite(M1_PWM, 0);
+    analogWrite(M2_PWM, 0);
 }
 
-/* void drive(bool forward, int s1, int s2) {
-  // startup kick to overcome static friction
-  motor1(KICK, forward);
-  motor2(KICK, forward);
-  delay(KICK_TIME);
-
-  vitesseMot(s1,s2,forward);
-}*/
-
-void gauche(int16_t puissance){
-  vitesseMot(puissance, 0, true);
+void gauche(int16_t puissance) {
+    vitesseMot(0, puissance, true);
 }
 
-void droite(int16_t puissance){
-  vitesseMot(0,puissance,true);
+void droite(int16_t puissance) {
+    vitesseMot(puissance, 0, true);
 }
 
-void ossiler(int16_t intervalle){
-  static int16_t compteur = 0;
-  static Direction dir = GAUCHE;
+void avancer(int16_t speedLeft, int16_t speedRight) {
+    // Kick initial
+    vitesseMot(200, 200, true);
+    delay(100);
 
-  if (dir == GAUCHE){
-    gauche(CRUISE_CALIBRATE);
-  }else {
-    droite(CRUISE_CALIBRATE);
-  }
-  compteur++;
-  if (compteur>= intervalle){
-    dir = (Direction)!dir;
-    compteur = 0;
-  }
+    // Vitesse normale
+    vitesseMot(speedLeft, speedRight, true);
 }
 
+void reculer(int16_t speedLeft, int16_t speedRight) {
+    vitesseMot(speedLeft, speedRight, false);
+}
 
+void ossiler(int16_t intervalle) {
+    static int16_t compteur = 0;
+    static Direction dir = GAUCHE;
 
+    if (dir == GAUCHE) {
+        gauche(CRUISE_CALIBRATE);
+    } else {
+        droite(CRUISE_CALIBRATE);
+    }
 
+    compteur++;
+
+    if (compteur >= intervalle) {
+        dir = (Direction)!dir;
+        compteur = 0;
+    }
+}

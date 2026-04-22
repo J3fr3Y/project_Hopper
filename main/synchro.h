@@ -1,22 +1,16 @@
-#include <stdint.h>
 #ifndef SYNCHRO_H
 #define SYNCHRO_H
 
 #include <Arduino.h>
-#include <QTRSensors>
-#include "fonctionsCapteur.h"
-#include "fonctionsMoteur.h"
+#include <QTRSensors.h>
 
+// Initialisation globale
+void initialisation(QTRSensors &capteur,
+                    uint8_t pinsCapteurs[], uint8_t nbCapteurs,
+                    int16_t M1_P, int16_t M1_D,
+                    int16_t M2_P, int16_t M2_D);
 
-
-
-void initialisation(int16_t S1,int16_t S2, int16_t S3, int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D, QTRSensors &capteur);
-void calibrage (QTRSensors &capteur);
-void ligneNoir();
-void ligneBlanche();
-void debutEnT();
-
-
-
+// Calibration avec mouvement
+void calibrage(QTRSensors &capteur);
 
 #endif
