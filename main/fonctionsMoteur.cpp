@@ -12,7 +12,7 @@ const int CRUISE1 = 255;
 const int CRUISE2 = 255;
 const int KICK = 160;
 const int KICK_TIME = 150;
-const int CRUISE_CALIBRATE = 100;
+const int CRUISE_CALIBRATE = 90;
 
 enum Direction {
     GAUCHE,
@@ -40,9 +40,9 @@ void initMoteur(int16_t m1_pwm, int16_t m1_dir,
     analogWrite(M2_PWM, 0);
 }
 
-void vitesseMot(int16_t speed1, int16_t speed2, bool forward) {
+void vitesseMot(int16_t speed1, int16_t speed2, bool forward, bool reverse) {
     digitalWrite(M1_DIR, forward ? HIGH : LOW);
-    digitalWrite(M2_DIR, forward ? HIGH : LOW);
+    digitalWrite(M2_DIR, reverse ? HIGH : LOW);
 
     analogWrite(M1_PWM, speed1);
     analogWrite(M2_PWM, speed2);
@@ -54,24 +54,25 @@ void arretMot() {
 }
 
 void gauche(int16_t puissance) {
-    vitesseMot(0, puissance, true);
+    vitesseMot(puissance, puissance,false, true);
+
 }
 
 void droite(int16_t puissance) {
-    vitesseMot(puissance, 0, true);
+    vitesseMot(puissance, puissance, true,false);
 }
 
 void avancer(int16_t speedLeft, int16_t speedRight) {
     // Kick initial
-    vitesseMot(200, 200, true);
+    vitesseMot(200, 200, true,true);
     delay(100);
 
     // Vitesse normale
-    vitesseMot(speedLeft, speedRight, true);
+    vitesseMot(speedLeft, speedRight, true, true);
 }
 
 void reculer(int16_t speedLeft, int16_t speedRight) {
-    vitesseMot(speedLeft, speedRight, false);
+    vitesseMot(speedLeft, speedRight, false,false);
 }
 
 void ossiler(int16_t intervalle) {

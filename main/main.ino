@@ -38,7 +38,9 @@ void loop() {
     leftMotorSpeed  = constrain(leftMotorSpeed, 0, 255);
     rightMotorSpeed = constrain(rightMotorSpeed, 0, 255);
 }*/
-
+#include <QTRSensors.h>
+#include "synchro.h"
+#include "fonctionsCapteur.h"
 #include "fonctionsMoteur.h"
 
 // À adapter selon ton câblage
@@ -46,25 +48,19 @@ void loop() {
 #define M1_DIR 7
 #define M2_PWM 5
 #define M2_DIR 4
-
+#define nb_cptr 3
+QTRSensors capteur;
 void setup() {
     Serial.begin(9600);
-    initMoteur(M1_PWM, M1_DIR, M2_PWM, M2_DIR);
+    QTRSensors capteur;
+    uint8_t pinsCapteurs[] = {2,3,4};
+    initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
 }
 //gauche et droit sont inversé
 void loop() {
-    Serial.println("Gauche seul");
-    avancer(150, 0); // gauche seul
-    delay(2000);
-
-    Serial.println("Droite seul");
-    avancer(0, 150); // droite seul
-    delay (2000);
-
-    arretMot();
-    delay (2000);
-    Serial.println("les deux");
-    avancer(150, 110);
-    delay(4000);
+    //calibrate 
+    delay(3000);
+    calibrage(capteur);
+    
 }
 
