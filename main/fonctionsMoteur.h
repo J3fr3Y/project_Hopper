@@ -9,17 +9,17 @@ void initMoteur(int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D);
 
 // Contrôle des moteurs
 void vitesseMot(int16_t speedLeft, int16_t speedRight, bool forward,bool reverse);
-void avancer(int16_t speedLeft, int16_t speedRight);
+void avancer(int16_t speedLeft, int16_t speedRight); //apres un stop pour demarrer les moteurs en meme temps
 void reculer(int16_t speedLeft, int16_t speedRight);
 
 // Arrêt
 void arretMot();
 
-// Mouvement simples
+// Mouvement simples puissance sur 2 moteurs
 void gauche(int16_t puissance);
 void droite(int16_t puissance);
 
 // Oscillation (calibration)
-void ossiler(int16_t intervalle);
+void ossiler();
 
 #endif

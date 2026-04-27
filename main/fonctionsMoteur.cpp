@@ -8,19 +8,23 @@ static int16_t M1_DIR;
 static int16_t M2_PWM;
 static int16_t M2_DIR;
 
-const int CRUISE1 = 255;
-const int CRUISE2 = 255;
+//variable de vitesse des moteurs [0, 255]
+//ecart de 4 entre le moteur gauche(-4) et droit 
+
+const int CRUISE1 = 120;
+const int CRUISE2 = 124;
 const int KICK = 160;
 const int KICK_TIME = 150;
 const int CRUISE_CALIBRATE = 90;
+const int intervalle = 30;//Utilisee dans ossiler
 
 enum Direction {
     GAUCHE,
     DROITE
 };
 
-void initMoteur(int16_t m1_pwm, int16_t m1_dir,
-                int16_t m2_pwm, int16_t m2_dir) {
+//Initialisation
+void initMoteur(int16_t m1_pwm, int16_t m1_dir, int16_t m2_pwm, int16_t m2_dir) {
 
     // Stockage des pins
     M1_PWM = m1_pwm;
@@ -36,46 +40,52 @@ void initMoteur(int16_t m1_pwm, int16_t m1_dir,
     // État initial
     digitalWrite(M1_DIR, LOW);
     digitalWrite(M2_DIR, LOW);
-    analogWrite(M1_PWM, 0);
-    analogWrite(M2_PWM, 0);
+    arretMot();
 }
 
-void vitesseMot(int16_t speed1, int16_t speed2, bool forward, bool reverse) {
-    digitalWrite(M1_DIR, forward ? HIGH : LOW);
-    digitalWrite(M2_DIR, reverse ? HIGH : LOW);
+//Changer la vitesse des Moteurs Valeur pour les 2 moteurs separement et un boolean pour savoir dans quel sens tourner
+void vitesseMot(int16_t speed1, int16_t speed2, bool forwardM1, bool forwardM2) {
+    digitalWrite(M1_DIR, forwardM1 ? HIGH : LOW);
+    digitalWrite(M2_DIR, forwardM2 ? HIGH : LOW);
 
     analogWrite(M1_PWM, speed1);
     analogWrite(M2_PWM, speed2);
 }
 
+
+//Arret des moteurs
 void arretMot() {
     analogWrite(M1_PWM, 0);
     analogWrite(M2_PWM, 0);
 }
 
+//tourner a gauche avec les 2 roues
 void gauche(int16_t puissance) {
     vitesseMot(puissance, puissance,false, true);
 
 }
-
+//Tourner a droite avec les 2 roues
 void droite(int16_t puissance) {
     vitesseMot(puissance, puissance, true,false);
 }
 
+//Pour demarrer les moteurs en meme temps (a utiliser apres un arretMot())
 void avancer(int16_t speedLeft, int16_t speedRight) {
     // Kick initial
-    vitesseMot(200, 200, true,true);
+    vitesseMot(KICK, KICK, true,true);
     delay(100);
 
     // Vitesse normale
     vitesseMot(speedLeft, speedRight, true, true);
 }
 
+//Pour reculer
 void reculer(int16_t speedLeft, int16_t speedRight) {
     vitesseMot(speedLeft, speedRight, false,false);
 }
 
-void ossiler(int16_t intervalle) {
+//pour ossiler pendant le cablibrage (intervalle pour savoir quand changer de direction)
+void ossiler() {
     static int16_t compteur = 0;
     static Direction dir = GAUCHE;
 
