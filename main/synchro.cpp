@@ -8,6 +8,7 @@
 #define K 100 //Facteur a regler pour le calcul de correction [90,120] mouvement doux
 #define nb_cptr 3
 #define SEUIL_NOIR 700 //seuil pourdire qu on voit du noir [600,800] 
+#define SEUIL_BLANC 250 //seuil pourdire qu on voit du blanc [100,300] 
 
 const int CRUISE1 = 120;
 const int CRUISE2 = 124;
@@ -69,8 +70,56 @@ bool casDepart (QTRSensors &capteur){
 
 }
 
+bool toutNoir (QTRSensors &capteur){
+    uint16_t sensor[nb_cptr];
+    capteur.readCalibrated(sensor);
+
+    int16_t compteur = 0;
+
+    for (int16_t i =0; i<nb_cptr; i++) {
+        if (sensor[i]<SEUIL_NOIR){ //Seuil a tester
+            return false; // Si un des capteurs vois du blanc
+        }
+    }
+    return true;
+
+}
+
 bool toutBlanc (QTRSensors &capteur){
-    //TODO
+    uint16_t sensor[nb_cptr];
+    capteur.readCalibrated(sensor);
+
+    int16_t compteur = 0;
+
+    for (int16_t i =0; i<nb_cptr; i++) {
+        if (sensor[i]>SEUIL_BLANC){ //Seuil a tester
+            return false; // Si un des capteurs voit du noir
+        }
+    }
+    return true;
+}
+
+void suivreLigne (QTRSensors &capteur){
+    uint16_t sensor[nb_cptr];
+    int16_t position = capteur.readLineBlack(sensor);
+    if (toutBlanc(capteur)||toutNoir(capteur)){
+        arretMot();
+        return;
+    }
+    int16_t vitesse1;
+    int16_t vitesse2;
+    int16_t erreur = position -CENTRE;
+    if (abs(erreur)<SEUIL){
+        vitesse1 = CRUISE1;
+        vitesse2 = CRUISE2;
+    }else {
+        int16_t correction = erreur/K;
+        vitesse1 = CRUISE1-correction;
+        vitesse2 = CRUISE2+correction;
+    }
+
+    vitesseMot(constrain(vitesse1,90,190),constrain(vitesse2,90,190),true,true);    
+
 }
 
 

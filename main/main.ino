@@ -17,14 +17,24 @@ QTRSensors capteur;//installer la librairie QTRSensors de Pololu (oui c'est le b
 void setup() {
     Serial.begin(9600);
     uint8_t pinsCapteurs[] = PIN_CAPTEURS;
-    initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
-    
+    //initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
+    initCapteur(capteur,pinsCapteurs, nb_cptr);
     //Calibrage du capteur
     delay(3000);
-    calibrage(capteur);
+    calibrerCapteur(capteur);
+
 }
 
 void loop() {
+    uint16_t sensors[nb_cptr];
+    capteur.readCalibrated(sensors);
+
+    for (int i = 0; i < nb_cptr; i++) {
+        Serial.print(sensors[i]);
+        Serial.print(" ");
+    }
+    Serial.println();
+    delay(500);
 
     
 }

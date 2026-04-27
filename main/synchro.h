@@ -13,7 +13,8 @@ void initialisation(QTRSensors &capteur,
 // Calibration avec mouvement
 void calibrage(QTRSensors &capteur);
 void alignement (QTRSensors &capteur); //Se retrouver sur la ligne noir apres calibrage
-bool casDepart (QTRSensors &capteur); //Cas ou il voit que du noir
-bool toutBlanc (QTRSensors &capteur);
-
+bool casDepart (QTRSensors &capteur); //Cas ou il voit que du noir avec valeurs non calibrees
+bool toutNoir (QTRSensors &capteur); //Cas ou il voit que du noir avec valeurs calibrees
+bool toutBlanc (QTRSensors &capteur);//Cas ou il voit que du blanc
+void suivreLigne (QTRSensors &capteur);//fonction principale pour le suivie de ligne
 #endif
