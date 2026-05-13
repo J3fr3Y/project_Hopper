@@ -33,6 +33,8 @@ void calibrage(QTRSensors &capteur) {
 
     arretMot();
 
+    alignement(capteur);
+
     Serial.println("Fin calibrage");
 }
 

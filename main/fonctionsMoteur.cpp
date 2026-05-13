@@ -14,7 +14,7 @@ static int16_t M2_DIR;
 const int CRUISE1 = 120;
 const int CRUISE2 = 124;
 const int KICK = 160;
-const int KICK_TIME = 150;
+const int KICK_TIME = 50;
 const int CRUISE_CALIBRATE = 90;
 const int intervalle = 30;//Utilisee dans ossiler
 
@@ -73,7 +73,7 @@ void droite(int16_t puissance) {
 void avancer(int16_t speedLeft, int16_t speedRight) {
     // Kick initial
     vitesseMot(KICK, KICK, true,true);
-    delay(100);
+    delay(KICK_TIME);
 
     // Vitesse normale
     vitesseMot(speedLeft, speedRight, true, true);
@@ -86,8 +86,10 @@ void reculer(int16_t speedLeft, int16_t speedRight) {
 
 //pour ossiler pendant le cablibrage (intervalle pour savoir quand changer de direction)
 void ossiler() {
-    static int16_t compteur = 0;
-    static Direction dir = GAUCHE;
+    //static int16_t compteur = 0;
+    //static Direction dir = GAUCHE;
+    int16_t compteur = 0;
+    Direction dir = GAUCHE;
 
     if (dir == GAUCHE) {
         gauche(CRUISE_CALIBRATE);
