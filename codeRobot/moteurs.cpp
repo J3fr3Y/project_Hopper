@@ -1,5 +1,6 @@
 #include "config.h"
 #include "moteurs.h"
+#include <Arduino.h>
 
 void initMoteurs() {
 
@@ -13,6 +14,7 @@ void initMoteurs() {
 void moteurGauche(int vitesse) {
 
   if (vitesse >= 0) {
+    
 
     digitalWrite(M1_DIR, HIGH);
     analogWrite(M1_PWM, vitesse);
@@ -27,12 +29,12 @@ void moteurGauche(int vitesse) {
 void moteurDroit(int vitesse) {
 
   if (vitesse >= 0) {
-
+    vitesse +=3;
     digitalWrite(M2_DIR, HIGH);
     analogWrite(M2_PWM, vitesse);
 
   } else {
-
+    vitesse -=3;
     digitalWrite(M2_DIR, LOW);
     analogWrite(M2_PWM, -vitesse);
   }

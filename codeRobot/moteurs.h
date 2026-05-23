@@ -1,5 +1,6 @@
 #ifndef MOTEURS_H
 #define MOTEURS_H
+#include <Arduino.h>
 
 void initMoteurs();
 

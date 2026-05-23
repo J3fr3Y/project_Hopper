@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <QTRSensors.h>
+#include <Arduino.h>
 
 // ===== MOTEURS =====
 

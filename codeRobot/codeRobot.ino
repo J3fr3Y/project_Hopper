@@ -3,6 +3,7 @@
 #include "capteurs.h"
 #include "suiveur.h"
 #include "tests.h"
+#include <Arduino.h>
 
 void setup() {
 
@@ -17,9 +18,9 @@ void setup() {
 
 void loop() {
 
-  suivreLigne();
+  //suivreLigne();
 
-  // testCapteurs();
-  // testMoteurs();
+  testCapteurs();
+  //testMoteurs(); OK
 
 }

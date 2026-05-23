@@ -1,6 +1,7 @@
 #include "suiveur.h"
 #include "capteurs.h"
 #include "moteurs.h"
+#include <Arduino.h>
 
 int vitesseBase = 90;
 int vitesseMax = 255;
@@ -12,11 +13,7 @@ float Kd = 0.25;
 int erreurPrecedente = 0;
 float sommeErreurs = 0;
 
-void suivreLigne() {
-
-  int position = lirePosition();
-
-  int erreur = position - 1000;
+int calculCorrectionPID(int erreur) {
 
   sommeErreurs += erreur;
 
@@ -29,12 +26,48 @@ void suivreLigne() {
 
   erreurPrecedente = erreur;
 
+  return correction;
+}
+
+int limiterVitesse(int vitesse) {
+
+  return constrain(vitesse, -vitesseMax, vitesseMax);
+}
+
+void suivreLigne() {
+
+  int position = lirePosition();
+
+  int erreur = position - 1000;
+
+  int correction = calculCorrectionPID(erreur);
+
   int vg = vitesseBase + correction;
   int vd = vitesseBase - correction;
 
-  vg = constrain(vg, -vitesseMax, vitesseMax);
-  vd = constrain(vd, -vitesseMax, vitesseMax);
+  vg = limiterVitesse(vg);
+  vd = limiterVitesse(vd);
 
   moteurGauche(vg);
   moteurDroit(vd);
+}
+
+void rechercheLigne() {
+
+  tournerDroite(80);
+}
+
+void gererIntersection() {
+
+  avancer(vitesseBase);
+}
+
+void gererArrivee() {
+
+  stopMoteurs();
+}
+
+void gestionDepart() {
+
+  avancer(vitesseBase);
 }
