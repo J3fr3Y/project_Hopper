@@ -2,6 +2,8 @@
 #include "capteurs.h"
 #include "moteurs.h"
 #include <Arduino.h>
+#include <QTRSensors.h>
+
 
 int vitesseBase = 90;
 int vitesseMax = 255;

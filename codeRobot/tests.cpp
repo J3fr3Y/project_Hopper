@@ -1,5 +1,6 @@
 #include "tests.h"
 #include <Arduino.h>
+#include <QTRSensors.h>
 #include "moteurs.h"
 #include "capteurs.h"
 #include "suiveur.h"

@@ -4,6 +4,8 @@
 #include "suiveur.h"
 #include "tests.h"
 #include <Arduino.h>
+#include <QTRSensors.h>
+
 
 void setup() {
 

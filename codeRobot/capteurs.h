@@ -1,6 +1,8 @@
 #ifndef CAPTEURS_H
 #define CAPTEURS_H:
 #include <Arduino.h>
+#include <QTRSensors.h>
+
 
 void initCapteurs();
 

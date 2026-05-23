@@ -1,6 +1,8 @@
 #ifndef TESTS_H
 #define TESTS_H
 #include <Arduino.h>
+#include <QTRSensors.h>
+
 
 // ===== TESTS MOTEURS =====
 

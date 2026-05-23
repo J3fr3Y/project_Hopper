@@ -1,6 +1,8 @@
 #ifndef SUIVEUR_H
 #define SUIVEUR_H
 #include <Arduino.h>
+#include <QTRSensors.h>
+
 // ===== VARIABLES PID =====
 
 extern int vitesseBase;

@@ -2,6 +2,7 @@
 #include "capteurs.h"
 #include "moteurs.h"
 #include <Arduino.h>
+#include <QTRSensors.h>
 
 QTRSensors qtr;
 
@@ -9,7 +10,7 @@ uint16_t valeursCapteurs[NB_CAPTEURS];
 
 void initCapteurs() {
 
-  qtr.setTypeAnalog();
+  qtr.setTypeRC();
 
   qtr.setSensorPins(capteursPins, NB_CAPTEURS);
 }

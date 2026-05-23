@@ -16,7 +16,7 @@
 
 #define NB_CAPTEURS 3
 
-const uint8_t capteursPins[NB_CAPTEURS] = {A0, A1, A2};
+const uint8_t capteursPins[NB_CAPTEURS] = {2,3,4};
 
 // ===== PID =====
 
