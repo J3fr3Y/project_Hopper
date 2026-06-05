@@ -40,8 +40,9 @@ void moteurDroit(int16_t vitesse, bool avancer){
   analogWrite(M2_PWM, vitesse);
 }
 void moteurs (int16_t vitesse, bool avancer){
+  int16_t vitesseD = vitesse+4;
   moteurGauche(vitesse,avancer);
-  moteurDroit(vitesse, avancer);
+  moteurDroit(vitesseD, avancer);
 }
 
 void stop(){

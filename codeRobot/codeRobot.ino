@@ -12,6 +12,8 @@
 #define PIN_CAPTEURS {2,3,8}
 QTRSensors capteur;
 
+uint16_t sensor[3];
+
 
 void setup() {
   uint8_t pinsCapteurs[] = PIN_CAPTEURS;
@@ -19,9 +21,10 @@ void setup() {
   delay(3000);
   calibrage(capteur);
   allignement(capteur);
+  delay(2000);
 }
 
 void loop() {
-        
+  suivreLigne(capteur);        
 }
 
