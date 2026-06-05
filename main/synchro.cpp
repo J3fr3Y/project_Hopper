@@ -5,13 +5,23 @@
 
 #define CENTRE 1000 // car centre = (nbCapteur -1)*1000 /2
 #define SEUIL 50 // ENTRE 30 ET 100 depend du capteur cest pour une marge de tolerance pour l'alignement
-#define K 100 //Facteur a regler pour le calcul de correction [90,120] mouvement doux
+#define K 90 //Facteur a regler pour le calcul de correction [90,120] mouvement doux
 #define nb_cptr 3
 #define SEUIL_NOIR 700 //seuil pourdire qu on voit du noir [600,800] 
 #define SEUIL_BLANC 250 //seuil pourdire qu on voit du blanc [100,300] 
 
 const int CRUISE1 = 120;
-const int CRUISE2 = 124;
+const int CRUISE2 = CRUISE1+4;
+
+int vitesseBase = 120;
+int vitesseMax = 160;
+
+float Kp = 0.12;
+float Ki = 0.0;
+float Kd = 0.25;
+
+int erreurPrecedente = 0;
+float sommeErreurs = 0;
 
 void initialisation(QTRSensors &capteur,
                     uint8_t pinsCapteurs[], uint8_t nbCapteurs,
@@ -20,22 +30,6 @@ void initialisation(QTRSensors &capteur,
 
     initCapteur(capteur, pinsCapteurs, nbCapteurs);
     initMoteur(M1_P, M1_D, M2_P, M2_D);
-}
-
-void calibrage(QTRSensors &capteur) {
-    Serial.println("Calibrage dynamique...");
-
-    for (uint8_t i = 0; i < 200; i++) {
-        capteur.calibrate();//Fonction de la librairie
-        ossiler(); // mouvement pendant calibration
-        delay(20);
-    }
-
-    arretMot();
-
-    alignement(capteur);
-
-    Serial.println("Fin calibrage");
 }
 
 void alignement (QTRSensors &capteur){
@@ -57,6 +51,70 @@ void alignement (QTRSensors &capteur){
     }
 }
 
+void calibrage(QTRSensors &capteur) {
+    Serial.println("Calibrage dynamique...");
+
+    for (uint8_t i = 0; i < 200; i++) {
+        capteur.calibrate();//Fonction de la librairie
+        ossiler(); // mouvement pendant calibration
+        delay(20);
+    }
+
+    arretMot();
+
+    alignement(capteur);
+
+    Serial.println("Fin calibrage");
+}
+
+int calculCorrectionPID(int erreur) {
+
+  sommeErreurs += erreur;
+
+  int derivee = erreur - erreurPrecedente;
+
+  int correction =
+      Kp * erreur
+    + Ki * sommeErreurs
+    + Kd * derivee;
+
+  erreurPrecedente = erreur;
+
+  return correction;
+}
+
+int limiterVitesse(int vitesse) {
+
+  return constrain(vitesse, -vitesseMax, vitesseMax);
+}
+
+void suivreLigne(QTRSensors &capteur) {
+  uint16_t valeursCapteurs[nb_cptr];
+  int position = lireLigne(capteur, valeursCapteurs);
+
+  int erreur = position - 1000;
+
+  int correction = calculCorrectionPID(erreur);
+
+  int vg = vitesseBase + correction;
+  int vd = vitesseBase - correction;
+
+  vg = limiterVitesse(vg);
+  vd = limiterVitesse(vd);
+
+  vitesseMot(vg,vd,true,true);
+}
+
+
+
+
+
+
+
+
+/*
+
+
 bool casDepart (QTRSensors &capteur){
     uint16_t sensor[nb_cptr];
     capteur.read(sensor);
@@ -69,7 +127,6 @@ bool casDepart (QTRSensors &capteur){
         }
     }
     return true;
-
 }
 
 bool toutNoir (QTRSensors &capteur){
@@ -123,7 +180,7 @@ void suivreLigne (QTRSensors &capteur){
     vitesseMot(constrain(vitesse1,90,190),constrain(vitesse2,90,190),true,true);    
 
 }
-
+*/
 
 
 

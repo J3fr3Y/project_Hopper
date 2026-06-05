@@ -17,4 +17,6 @@ bool casDepart (QTRSensors &capteur); //Cas ou il voit que du noir avec valeurs 
 bool toutNoir (QTRSensors &capteur); //Cas ou il voit que du noir avec valeurs calibrees
 bool toutBlanc (QTRSensors &capteur);//Cas ou il voit que du blanc
 void suivreLigne (QTRSensors &capteur);//fonction principale pour le suivie de ligne
+int limiterVitesse(int vitesse);
+int calculCorrectionPID(int erreur) ;
 #endif

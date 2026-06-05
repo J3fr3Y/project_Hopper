@@ -27,11 +27,7 @@ void setup() {
     initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
     //Calibrage du capteur
     delay(3000);
-    while(casDepart(capteur)){
-        vitesseMot(CRUISE1, CRUISE2, true, true);
-        delay(50);
-        arretMot();
-    }
+
     calibrage(capteur);
 
 }

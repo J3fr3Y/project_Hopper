@@ -7,7 +7,7 @@ void initCapteur(QTRSensors &capteur, uint8_t pins[], uint8_t nbCapteurs) {
     capteur.setTypeRC();
     capteur.setSensorPins(pins, nbCapteurs);
 }
-/* NON UTILISEE on l'a dans synchro */
+/* NON UTILISEE on l'a dans synchro
 //Il faut presenter toutes la valeurs au capteur 
 void calibrerCapteur(QTRSensors &capteur) {
     Serial.println("Calibrage...");
@@ -18,7 +18,7 @@ void calibrerCapteur(QTRSensors &capteur) {
     }
 
     Serial.println("Fin calibrage");
-}
+}*/
 
 //Utilisation de la libraire
 //Donne la valeur lue pour chacun des capteurs dans sensors

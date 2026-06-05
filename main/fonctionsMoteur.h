@@ -8,9 +8,9 @@
 void initMoteur(int16_t M1_P, int16_t M1_D, int16_t M2_P, int16_t M2_D);
 
 // Contrôle des moteurs
-void vitesseMot(int16_t speedLeft, int16_t speedRight, bool forward,bool reverse);
-void avancer(int16_t speedLeft, int16_t speedRight); //apres un stop pour demarrer les moteurs en meme temps
-void reculer(int16_t speedLeft, int16_t speedRight);
+void vitesseMot(int16_t speedLeft, int16_t speedRight, bool forward1,bool forward2);
+void avancer(int16_t speed); //apres un stop pour demarrer les moteurs en meme temps
+void reculer(int16_t speed);
 
 // Arrêt
 void arretMot();
