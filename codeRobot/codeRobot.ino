@@ -20,11 +20,15 @@ void setup() {
   initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
   delay(3000);
   calibrage(capteur);
-  allignement(capteur);
-  delay(2000);
+  while(!allBlack(capteur,sensor)){
+    allignement(capteur);
+    delay(10);
+  }
+  delay(5000);
 }
 
 void loop() {
-  suivreLigne(capteur);        
+  suivreLigne(capteur);   
+     
 }
 
