@@ -91,7 +91,7 @@ void suivreLigne (QTRSensors &capteur){
   ancienneErreur = erreur;
 
   int16_t vitesseG = CRUISE + correction;
-  int16_t vitesseD = CRUISE -correction;
+  int16_t vitesseD = CRUISE - correction;
 
 
   moteurGauche(vitesseG, true);

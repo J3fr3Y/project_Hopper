@@ -11,7 +11,7 @@
 #define nb_cptr 3
 #define PIN_CAPTEURS {2,3,8}
 QTRSensors capteur;
-
+bool started = false;
 uint16_t sensor[3];
 
 
