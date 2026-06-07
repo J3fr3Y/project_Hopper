@@ -11,9 +11,9 @@
 
 int16_t erreur;
 int16_t ancienneErreur = 0;
-float Kp = 0.25;
+float Kp = 0.25;//last ideal kp = 0.25
 float Ki = 0;
-float Kd = 1.27;
+float Kd = 1.27;//last ideal kd = 1.27
 float correction;
 int16_t P; 
 int16_t D;
@@ -50,14 +50,19 @@ void allignement (QTRSensors &capteur){
   bool avancer;
   if (outOfBounds(capteur,sensors)){
     avancer = true;
-  }else if (onLine(capteur,sensors)){
-    avancer = false; 
   }
-  while (!allBlack(capteur,sensors)){
+  while (!onLine(capteur,sensors)){//change for online
     moteurs(CRUISE_CALIBRATE,avancer);
     delay(10);
     stop();
+  }/*else if (onLine(capteur,sensors)){
+    avancer = false; 
   }
+  while (!allBlack(capteur,sensors)){//change for online
+    moteurs(CRUISE_CALIBRATE,avancer);
+    delay(10);
+    stop();
+  }*/
 }
 
 
