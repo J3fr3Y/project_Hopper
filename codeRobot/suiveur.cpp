@@ -4,16 +4,16 @@
 #include <Arduino.h>
 
 #define NB_CAPTEURS 3
-#define CRUISE 70
+#define CRUISE 60
 #define CRUISE_CALIBRATE 90
-#define MAX_CRUISE 95
+#define MAX_CRUISE 200
 #define CENTRE 1000
 
 int16_t erreur;
 int16_t ancienneErreur = 0;
-float Kp = 0.25;//last ideal kp = 0.25
+float Kp = 1;//last ideal kp = 0.75
 float Ki = 0;
-float Kd = 1.27;//last ideal kd = 1.27
+float Kd = 0;//last ideal kd = 1.27
 float correction;
 int16_t P; 
 int16_t D;
@@ -50,19 +50,14 @@ void allignement (QTRSensors &capteur){
   bool avancer;
   if (outOfBounds(capteur,sensors)){
     avancer = true;
-  }
-  while (!onLine(capteur,sensors)){//change for online
-    moteurs(CRUISE_CALIBRATE,avancer);
-    delay(10);
-    stop();
-  }/*else if (onLine(capteur,sensors)){
+  }else if (onLine(capteur,sensors)){
     avancer = false; 
   }
   while (!allBlack(capteur,sensors)){//change for online
     moteurs(CRUISE_CALIBRATE,avancer);
     delay(10);
     stop();
-  }*/
+  }
 }
 
 
@@ -71,11 +66,10 @@ void suivreLigne (QTRSensors &capteur){
   uint16_t sensor[NB_CAPTEURS];
   //Nouvelle meusure
   int16_t position = capteur.readLineBlack(sensor);
-  /*if (allBlack(capteur, sensor)){
+  if (allBlack(capteur, sensor)){
     stop();
     delay(10000);
-  }*/
-
+  }else{
   //Calcul de P
   erreur = position - CENTRE;
   P = Kp*erreur; 
@@ -93,9 +87,13 @@ void suivreLigne (QTRSensors &capteur){
   int16_t vitesseG = CRUISE + correction;
   int16_t vitesseD = CRUISE - correction;
 
+  vitesseG = constrain(vitesseG, 0, MAX_CRUISE);
+  vitesseD = constrain(vitesseD, 0, MAX_CRUISE);
+
 
   moteurGauche(vitesseG, true);
   moteurDroit(vitesseD,true);
+  }
 
 }
 
