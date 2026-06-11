@@ -13,7 +13,5 @@ void moteurs (int16_t vitesse, bool avancer);
 
 void stop ();
 
-//void ossiler();
-
 
 #endif

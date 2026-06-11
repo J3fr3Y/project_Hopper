@@ -7,14 +7,14 @@
 #define NB_CAPTEURS 3
 #define CRUISE 102 //last ideal 102
 #define CRUISE_PID 102  //last ideal 102
-#define CRUISE_CALIBRATE 110 //last ideal 110
+#define CRUISE_CALIBRATE 115 //last ideal 110
 #define MAX_CRUISE 200 //last ideal 200
 #define CENTRE 1000
 
 int16_t erreur;
 int16_t ancienneErreur = 0;
-float Kp = 0.35;  //last ideal kp = 0.35
-float Kd = 2.8;   //last ideal kd = 2.8
+float Kp = 0.33;  //last ideal kp = 0.30
+float Kd = 3.30;   //last ideal kd = 2.8
 float correction;
 float P;
 float D;
@@ -31,20 +31,20 @@ void initialisation(QTRSensors &capteur,
 }
 
 void calibrage(QTRSensors &capteur) {
-  for (uint8_t i = 0; i < 100; i++) {
+  for (uint8_t i = 0; i < 200; i++) {
     capteur.calibrate();  //Fonction de la librairie*
   }
   moteurGauche(CRUISE_CALIBRATE, true);
   moteurDroit(CRUISE_CALIBRATE, false);
-  delay(500);
+  delay(600);
   stop();
 
-  for (uint8_t i = 0; i < 100; i++) {
+  for (uint8_t i = 0; i < 200; i++) {
     capteur.calibrate();  //Fonction de la librairie
   }
   moteurGauche(CRUISE_CALIBRATE, false);
   moteurDroit(CRUISE_CALIBRATE, true);
-  delay(500);
+  delay(700);
   stop();
   for (int i = 0; i < 3; i++) {
     seuils[i] =
@@ -57,7 +57,7 @@ void suivreLigne(QTRSensors &capteur) {
   int16_t position = capteur.readLineBlack(sensor);
 
   if (sensor[1] > seuils[1] && sensor[0] < seuils[0] && sensor[2] < seuils[2]) {
-
+    ancienneErreur = 0;
     moteurs(CRUISE, true);
   } else {
     erreur = position - CENTRE;
