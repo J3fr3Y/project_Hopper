@@ -5,21 +5,21 @@
 #include <Arduino.h>
 
 #define NB_CAPTEURS 3
-#define CRUISE 72 //last ideal 102
-#define CRUISE_PID 65  //last ideal 102
+#define CRUISE 85 //last ideal 102
+#define CRUISE_PID 85  //last ideal 102
 #define CRUISE_CALIBRATE 110 //last ideal 110
 #define MAX_CRUISE 200 //last ideal 200
 #define CENTRE 1000
-#define VITESSE_POINTILLE 70
-#define VITESSE_ANGLE_DROIT 75
-#define VITESSE_ANGLE_30_INTERIEUR 45
-#define VITESSE_ANGLE_30_EXTERIEUR 75
+#define VITESSE_POINTILLE 85
+#define VITESSE_ANGLE_DROIT 90
+#define VITESSE_ANGLE_30_INTERIEUR 60
+#define VITESSE_ANGLE_30_EXTERIEUR 90
 #define MAX_TEMPS_POINTILLE 350
 
 int16_t erreur;
 int16_t ancienneErreur = 0;
-float Kp = 0.20;  //last ideal kp = 0.35
-float Kd = 2.0;   //last ideal kd = 2.8
+float Kp = 0.35;  //last ideal kp = 0.35
+float Kd = 3.0;   //last ideal kd = 2.8
 float correction;
 float P;
 float D;
@@ -183,8 +183,8 @@ void suivreLigne(QTRSensors &capteur) {
     D = Kd * (erreur - ancienneErreur);
     correction = P + D;
 
-    int16_t vitesseG = CRUISE_PID - correction;
-    int16_t vitesseD = CRUISE_PID + correction;
+    int16_t vitesseG = CRUISE_PID + correction;
+    int16_t vitesseD = CRUISE_PID - correction;
 
     vitesseG = constrain(vitesseG, 0, MAX_CRUISE);
     vitesseD = constrain(vitesseD, 0, MAX_CRUISE);

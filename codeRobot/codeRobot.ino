@@ -20,7 +20,7 @@ uint16_t sensor[3];
 void setup() {
   Serial.begin(9600);
   uint8_t pinsCapteurs[] = PIN_CAPTEURS;
-  initialisationTest(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
+  initialisation(capteur,pinsCapteurs, nb_cptr,M1_PWM,M1_DIR,M2_PWM,M2_DIR);
   delay(3000);
   calibrage(capteur);
   delay(1000);

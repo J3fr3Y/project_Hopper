@@ -5,16 +5,16 @@
 #include <Arduino.h>
 
 #define NB_CAPTEURS 3
-#define CRUISE 102 //last ideal 102
-#define CRUISE_PID 102  //last ideal 102
-#define CRUISE_CALIBRATE 115 //last ideal 110
+#define CRUISE 92 //last ideal 102
+#define CRUISE_PID 92  //last ideal 102
+#define CRUISE_CALIBRATE 110 //last ideal 110
 #define MAX_CRUISE 200 //last ideal 200
 #define CENTRE 1000
 
 int16_t erreur;
 int16_t ancienneErreur = 0;
-float Kp = 0.33;  //last ideal kp = 0.30
-float Kd = 3.30;   //last ideal kd = 2.8
+float Kp = 0.30;  //last ideal kp = 0.30
+float Kd = 3.3;   //last ideal kd = 2.8
 float correction;
 float P;
 float D;
@@ -44,7 +44,7 @@ void calibrage(QTRSensors &capteur) {
   }
   moteurGauche(CRUISE_CALIBRATE, false);
   moteurDroit(CRUISE_CALIBRATE, true);
-  delay(700);
+  delay(800);
   stop();
   for (int i = 0; i < 3; i++) {
     seuils[i] =

@@ -4,14 +4,12 @@
 #include <Arduino.h>
 #include <QTRSensors.h>
 
-void initialisationCapteur(QTRSensors &capteur, uint8_t pins[], uint8_t nbCapteurs); 
-int16_t lireLigne (QTRSensors &capteur, uint16_t sensors[]);
-bool allWhite (QTRSensors &capteur, uint16_t sensors[]);
+void initialisationCapteur(QTRSensors &capteur, uint8_t pins[], uint8_t nbCapteurs);
+int16_t lireLigne(QTRSensors &capteur, uint16_t sensors[]);
+bool allWhite(QTRSensors &capteur, uint16_t sensors[]);
 bool allBlack(QTRSensors &capteur, uint16_t sensors[]);
-bool onLine (QTRSensors &capteur, uint16_t sensors[]);
-bool lineLeft (QTRSensors &capteur, uint16_t sensors[]);
-bool lineRight (QTRSensors &capteur, uint16_t sensors[]);
-
-
+bool onLine(QTRSensors &capteur, uint16_t sensors[]);
+bool lineLeft(QTRSensors &capteur, uint16_t sensors[]);
+bool lineRight(QTRSensors &capteur, uint16_t sensors[]);
 
 #endif

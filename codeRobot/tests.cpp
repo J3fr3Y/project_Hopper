@@ -75,8 +75,8 @@ void suivreLigneTest (QTRSensors &capteur){
     DTest = KdTest *(erreurTest-ancienneErreurTest);
     correctionTest = PTest+DTest; 
 
-    int16_t vitesseGTest = CRUISE_PID - correctionTest;
-    int16_t vitesseDTest = CRUISE_PID + correctionTest;
+    int16_t vitesseGTest = CRUISE_PID + correctionTest;
+    int16_t vitesseDTest = CRUISE_PID - correctionTest;
 
     vitesseGTest = constrain(vitesseGTest, 0, MAX_CRUISE);
     vitesseDTest = constrain(vitesseDTest, 0, MAX_CRUISE);
